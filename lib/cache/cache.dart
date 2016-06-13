@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:lastfmStats/cache/fetch.dart';
 import 'package:lastfmStats/display/artist.dart';
 import 'package:lastfmStats/display/loading.dart';
+import 'package:lastfmStats/cache/datetime.dart';
 
 
 class Cache {
@@ -35,7 +36,7 @@ class Cache {
   }
 
   load(){
-    if (compareLastUpdateToNow().inDays > 0){
+    if (compareLastUpdateToNow().inDays > 5){
       onFetchComplete.listen((_)=>cache());
       cacheLoaded = true;
       fetch();
@@ -72,19 +73,15 @@ class Cache {
     for (Artist a in artists){
       artistsJson.add(a.toJSONString());
     }
-    DateTime now = new DateTime.now();
-    window.localStorage['lastUpdate'] =
+    DateTimeSerializable now = new DateTimeSerializable.now();
+    window.localStorage['lastUpdate'] = now.toJson();
     window.localStorage['artistsCached'] = JSON.encode(artistsJson);
   }
 
   Duration compareLastUpdateToNow(){
     Duration diff = new Duration(days:365);
     if (window.localStorage.containsKey('lastUpdate')){
-      Map lastUpdateJson = JSON.decode(window.localStorage['lastUpdate']);
-      DateTime lastUpdate = new DateTime(
-          lastUpdateJson['year'], lastUpdateJson['month'], lastUpdateJson['day'],
-          lastUpdateJson['hour'], lastUpdateJson['minute'], lastUpdateJson['second'],
-          lastUpdateJson['millisecond'], lastUpdateJson['microsecond']);
+      DateTime lastUpdate = DateTimeSerializable.fromJson(window.localStorage['lastUpdate']);
       DateTime now = new DateTime.now();
       diff = now.difference(lastUpdate);
     }

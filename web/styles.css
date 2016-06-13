@@ -8,11 +8,45 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 .artist {
+    border: 3px solid #fff;
     display: flex;
+    height: 30px;
+    z-index: 1;
+}
+.content {
+    float: left;
+    width: 400px;
+}
+.metadataWrapper {
+    position: absolute;
+    display: flex;
+}
+.imageWrapper {
+    position: absolute;
+    width: 400px;
+    height: 30px;
 }
 .name, .playCount {
     margin-right: 10px;
     float:left;
+}
+.image {
+    position: relative;
+    height: 100%;
+    width: 400px;
+    transition: transform 0.5s;
+    transform: scale(1.1,1.1);
+    background-size: cover;
+    background-clip: padding-box;
+    z-index: -1;
+}
+.imageWrapper:hover .image{
+    transform: scale(1.0,1.0);
+}
+.blankCover {
+    float: left;
+    width: 400px;
+    background-color: white;
 }
 
 #loading {
