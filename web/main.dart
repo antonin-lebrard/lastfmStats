@@ -11,6 +11,3 @@ DivElement output = querySelector("#output");
 void main() {
   ScrollHandle scrollhandle = new ScrollHandle(new Cache(), output);
 }
-
-display(_){
-}
