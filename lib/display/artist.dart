@@ -11,13 +11,16 @@ class Artist {
   String choosedImageUrl;
 
   Artist(Map json){
+    print(json);
     name = json['name'];
     playcount = json['playcount'];
-    images = json['images'];
-    for (int i = 0; i < images.length; i++) {
-      if (images[i]['size'] == "extralarge") {
-        choosedImageUrl = images[i]['#text'];
-        break;
+    images = json['image'];
+    if (images != null) {
+      for (int i = 0; i < images.length; i++) {
+        if (images[i]['size'] == "extralarge") {
+          choosedImageUrl = images[i]['#text'];
+          break;
+        }
       }
     }
   }
@@ -65,7 +68,7 @@ class Artist {
         new Map()
           ..putIfAbsent('name',      () => name)
           ..putIfAbsent('playcount', () => playcount)
-          ..putIfAbsent('images',    () => images)
+          ..putIfAbsent('image',     () => images)
     );
   }
 

@@ -11,6 +11,9 @@ import 'package:lastfmStats/cache/datetime.dart';
 
 class Cache {
 
+  static final String ARTISTS_KEY = "artistsCached";
+  static final String UPDATE_KEY = "lastUpdate";
+
   static Cache _singleton;
 
   Map pages = new Map();
@@ -32,8 +35,11 @@ class Cache {
   Cache._internal(){
     onFetchComplete = _fetchComplete.stream;
     onCacheLoaded = _cacheLoaded.stream;
-    new Loading();
+    new Loading(this);
   }
+
+  bool get isCachedDataPresent => window.localStorage.containsKey(ARTISTS_KEY);
+  bool get _lastUpdatePresent => window.localStorage.containsKey(UPDATE_KEY);
 
   load(){
     if (compareLastUpdateToNow().inDays > 5){
@@ -41,8 +47,8 @@ class Cache {
       cacheLoaded = true;
       fetch();
     }
-    if (window.localStorage.containsKey('artistsCached')){
-      List<String> artistsJson = JSON.decode(window.localStorage['artistsCached']);
+    if (isCachedDataPresent){
+      List<String> artistsJson = JSON.decode(window.localStorage[ARTISTS_KEY]);
       for (String s in artistsJson){
         artists.add(new Artist(JSON.decode(s)));
       }
@@ -74,14 +80,14 @@ class Cache {
       artistsJson.add(a.toJSONString());
     }
     DateTimeSerializable now = new DateTimeSerializable.now();
-    window.localStorage['lastUpdate'] = now.toJson();
-    window.localStorage['artistsCached'] = JSON.encode(artistsJson);
+    window.localStorage[UPDATE_KEY] = now.toJson();
+    window.localStorage[ARTISTS_KEY] = JSON.encode(artistsJson);
   }
 
   Duration compareLastUpdateToNow(){
     Duration diff = new Duration(days:365);
-    if (window.localStorage.containsKey('lastUpdate')){
-      DateTime lastUpdate = DateTimeSerializable.fromJson(window.localStorage['lastUpdate']);
+    if (_lastUpdatePresent){
+      DateTime lastUpdate = DateTimeSerializable.fromJson(window.localStorage[UPDATE_KEY]);
       DateTime now = new DateTime.now();
       diff = now.difference(lastUpdate);
     }

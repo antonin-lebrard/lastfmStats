@@ -9,32 +9,36 @@ class ScrollHandle {
 
   Cache cache;
   DivElement output;
-  bool cacheLoaded = false;
+  bool cached = false;
 
-  int h;
   int nextIndex = 0;
 
   ScrollHandle(this.cache, this.output){
+    cached = cache.isCachedDataPresent;
     cache.onFetchComplete.listen((_)=>_display(true));
-    cache.onCacheLoaded.listen(_display);
+    cache.onCacheLoaded.listen((_)=>_display());
     cache.load();
     _init();
   }
 
   _init(){
-    h = window.innerHeight;
     window.onScroll.listen((_){
       _checkOutputFilling();
     });
   }
 
   _display([bool fromFetch = false]){
-    if (fromFetch){ return; }
+    if (fromFetch){
+      if (!cached) _fillOutput();
+      else {
+
+      }
+    }
     _fillOutput();
   }
 
   _checkOutputFilling(){
-    int pix = output.getBoundingClientRect().height - window.scrollY - window.innerHeight;
+    num pix = output.getBoundingClientRect().height - window.scrollY - window.innerHeight;
     if (pix < 300) _fillOutput();
   }
 
