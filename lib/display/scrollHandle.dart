@@ -31,7 +31,7 @@ class ScrollHandle {
     if (fromFetch){
       if (!cached) _fillOutput();
       else {
-
+        // TODO : add modal to notify of update available
       }
     }
     _fillOutput();

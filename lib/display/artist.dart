@@ -5,6 +5,14 @@ import 'dart:convert';
 
 class Artist {
 
+  static double delay = 0.0;
+
+  static double _incrementDelay() {
+    double temp = delay;
+    delay += 0.03;
+    return temp;
+  }
+
   String name;
   String playcount;
   List images;
@@ -17,7 +25,7 @@ class Artist {
     images = json['image'];
     if (images != null) {
       for (int i = 0; i < images.length; i++) {
-        if (images[i]['size'] == "extralarge") {
+        if (images[i]['size'] == "large") {
           choosedImageUrl = images[i]['#text'];
           break;
         }
@@ -29,7 +37,8 @@ class Artist {
     DivElement artistdiv = new DivElement();
     artistdiv.classes.add("artist");
     DivElement content = new DivElement();
-    content.classes.add("content");
+    content.classes..add("content");
+    content.style.animationDelay = "${_incrementDelay()}s";
     artistdiv..append(content..append(_metadataDiv())..append(_imageDiv()))..append(_blankCoverDiv());
     return artistdiv;
   }
