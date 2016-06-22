@@ -1,6 +1,4 @@
 @keyframes contentSlideIn {
-    0% {transform: translate(-405px);}
-    70% {transform: translate(-40px);}
-    80% {transform: translate(-20px);}
-    100% {transform: translate(0);}
+    from {transform: translate(-405px);}
+    to {transform: translate(0);}
 }

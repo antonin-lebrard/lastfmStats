@@ -2,8 +2,8 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
+
 import 'package:lastfmStats/cache/cache.dart';
-import 'package:lastfmStats/display/artist.dart';
 import 'package:lastfmStats/display/scrollHandle.dart';
 
 DivElement output = querySelector("#output");
