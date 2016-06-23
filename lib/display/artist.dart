@@ -2,14 +2,23 @@ library lastfmStats.artist;
 
 import 'dart:html';
 import 'dart:convert';
+import 'dart:async';
 
 class Artist {
 
   static double delay = 0.0;
+  static bool isAlreadyListeningScroll = false;
+  static bool _isScrolling = false;
+
+  static void _resetDelay() {
+    delay = 0.0;
+  }
 
   static double _incrementDelay() {
     double temp = delay;
     delay += 0.03;
+    if (delay > 1.5)
+      _resetDelay();
     return temp;
   }
 
@@ -18,8 +27,10 @@ class Artist {
   List images;
   String choosedImageUrl;
 
+  DivElement artistDiv;
+  DivElement content;
+
   Artist(Map json){
-    print(json);
     name = json['name'];
     playcount = json['playcount'];
     images = json['image'];
@@ -31,28 +42,40 @@ class Artist {
         }
       }
     }
+    if (!isAlreadyListeningScroll){
+      isAlreadyListeningScroll = true;
+      window.onScroll.listen((_){
+        if (!_isScrolling){
+          _resetDelay();
+          _isScrolling = true;
+          new Timer(new Duration(milliseconds: 10), (){
+            _isScrolling = false;
+          });
+        }
+      });
+    }
   }
 
   DivElement createDiv(){
-    DivElement artistdiv = new DivElement();
-    artistdiv.classes.add("artist");
-    DivElement content = new DivElement();
+    artistDiv = new DivElement();
+    artistDiv.classes.add("artist");
+    content = new DivElement();
     content.classes..add("content");
     content.style.animationDelay = "${_incrementDelay()}s";
-    artistdiv..append(content..append(_metadataDiv())..append(_imageDiv()))..append(_blankCoverDiv());
-    return artistdiv;
+    artistDiv..append(content..append(_metadataDiv())..append(_imageDiv()));
+    return artistDiv;
   }
 
   DivElement _metadataDiv(){
     DivElement metadataWrapperDiv = new DivElement();
     metadataWrapperDiv.classes.add("metadataWrapper");
-    DivElement namediv = new DivElement();
-    namediv.classes.add("name");
-    DivElement playcountdiv = new DivElement();
-    playcountdiv.classes.add("playCount");
-    namediv.text = this.name;
-    playcountdiv.text = this.playcount.toString();
-    return metadataWrapperDiv..append(namediv)..append(playcountdiv);
+    DivElement nameDiv = new DivElement();
+    nameDiv.classes.add("name");
+    DivElement playCountDiv = new DivElement();
+    playCountDiv.classes.add("playCount");
+    nameDiv.text = this.name;
+    playCountDiv.text = this.playcount.toString();
+    return metadataWrapperDiv..append(nameDiv)..append(playCountDiv);
   }
 
   DivElement _imageDiv(){
@@ -62,12 +85,6 @@ class Artist {
     imageDiv.classes.add("image");
     imageDiv.style.backgroundImage = 'url("$choosedImageUrl")';
     return imageWrapperDiv..append(imageDiv);
-  }
-
-  DivElement _blankCoverDiv(){
-    DivElement blankDiv = new DivElement();
-    blankDiv.classes.add("blankCover");
-    return blankDiv;
   }
 
   String toString() => "$name : $playcount";
