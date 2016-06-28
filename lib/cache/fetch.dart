@@ -8,10 +8,12 @@ import 'package:lastfmStats/display/artist.dart';
 class LastFMFetching {
 
   static String API_KEY = "e48114b86f19bf363d5dbc85397799e1";
-  static String user = "fandegw";
+  static String user = "";
 
   static StreamController<int> _loading = new StreamController.broadcast();
   static Stream<int> loading = _loading.stream;
+  static StreamController<LastFMError> _onError = new StreamController.broadcast();
+  static Stream<LastFMError> onError = _onError.stream;
 
   static Map attr = {
     "totalPages": "2"
@@ -28,6 +30,9 @@ class LastFMFetching {
       artists.addAll(artistsPage);
       _loading.add(100);
       completer.complete(getArtists(artists, ++page));
+    }).catchError((LastFMError error){
+      _onError.add(error);
+      return new Future.error(error);
     });
     return completer.future;
   }
@@ -41,6 +46,9 @@ class LastFMFetching {
     }
     new HttpRequest()..open("GET", url)..onLoad.listen((event){
       Map content = JSON.decode(event.target.responseText);
+      if (content.containsKey("error")){
+        return new Future.error(new LastFMError(int.parse(content["error"]), content["message"]));
+      }
       content = content["artists"];
       attr = content["@attr"];
       List artistsContent = content["artist"];
@@ -53,4 +61,10 @@ class LastFMFetching {
     return completer.future;
   }
 
+}
+
+class LastFMError {
+  int code;
+  String message;
+  LastFMError(this.code, this.message);
 }

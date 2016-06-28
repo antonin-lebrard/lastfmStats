@@ -1,7 +1,7 @@
 library lastfmStats.scroll;
 
-import 'package:lastfmStats/cache/cache.dart';
 import 'dart:html';
+import 'package:lastfmStats/cache/cache.dart';
 import 'package:lastfmStats/display/artist.dart';
 
 
@@ -17,7 +17,6 @@ class ScrollHandle {
     cached = cache.isCachedDataPresent;
     cache.onFetchComplete.listen((_)=>_display(true));
     cache.onCacheLoaded.listen((_)=>_display());
-    cache.load();
     _init();
   }
 

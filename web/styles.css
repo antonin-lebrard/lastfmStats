@@ -58,10 +58,6 @@ html, body {
     background-position-x: 0;
     background-position-y: -310px;
 }
-.blankCover {
-    float: left;
-    background-color: white;
-}
 
 #loading {
     position: absolute;
@@ -74,4 +70,20 @@ html, body {
 }
 .loadingWithCache {
     background-color: transparent;
+}
+
+#login-outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+#login-middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+#login-inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
 }

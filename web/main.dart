@@ -3,11 +3,11 @@
 
 import 'dart:html';
 
-import 'package:lastfmStats/cache/cache.dart';
-import 'package:lastfmStats/display/scrollHandle.dart';
+import 'package:lastfmStats/display/login.dart';
 
 DivElement output = querySelector("#output");
+DivElement login = querySelector("#login-outer");
 
 void main() {
-  ScrollHandle scrollhandle = new ScrollHandle(new Cache(), output);
+  new Login(login, output);
 }
