@@ -28,6 +28,7 @@ class Login {
       return;
     }
     loginInput = elems[0];
+    loginInput.focus();
     loginInput.onKeyPress.listen((KeyboardEvent event){
       if (event.keyCode == KeyCode.ENTER || event.keyCode == KeyCode.MAC_ENTER) {
         LastFMFetching.user = loginInput.value;

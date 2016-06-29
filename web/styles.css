@@ -72,6 +72,13 @@ html, body {
     background-color: transparent;
 }
 
+input {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    outline-offset: 0;
+    outline: none;
+}
 #login-outer {
     display: table;
     position: absolute;
@@ -86,4 +93,7 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     width: 200px;
+}
+#login-username {
+    font-size: 16px;
 }
