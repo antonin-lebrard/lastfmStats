@@ -9,12 +9,10 @@ class ScrollHandle {
 
   Cache cache;
   DivElement output;
-  bool cached = false;
 
   int nextIndex = 0;
 
   ScrollHandle(this.cache, this.output){
-    cached = cache.isCachedDataPresent;
     cache.onFetchComplete.listen((_)=>_display(true));
     cache.onCacheLoaded.listen((_)=>_display());
     _init();
@@ -28,7 +26,7 @@ class ScrollHandle {
 
   _display([bool fromFetch = false]){
     if (fromFetch){
-      if (!cached) _fillOutput();
+      if (!cache.usernamePresent) _fillOutput();
       else {
         // TODO : add modal to notify of update available
       }

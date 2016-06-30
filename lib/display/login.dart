@@ -15,13 +15,11 @@ class Login {
 
   ScrollHandle scrollHandle;
 
-  Cache cache;
+  Cache cache = new Cache();
 
   Login(this.login, DivElement output){
-    cache = new Cache();
-    scrollHandle = new ScrollHandle(cache, output);
     cache.onCacheLoaded.listen((_) => login.style.display = "none");
-    cache.load();
+    scrollHandle = new ScrollHandle(cache, output);
     List<Element> elems = login.querySelectorAll("input");
     if (elems.length == 0){
       print("No Input in login div, crash");
@@ -31,11 +29,10 @@ class Login {
     loginInput.focus();
     loginInput.onKeyPress.listen((KeyboardEvent event){
       if (event.keyCode == KeyCode.ENTER || event.keyCode == KeyCode.MAC_ENTER) {
-        LastFMFetching.user = loginInput.value;
-        cache.load();
+        cache.load(loginInput.value, new LastFMFetching());
         loginInput.value = "";
         login.style.display = "none";
-        LastFMFetching.onError.listen((LastFMError error){
+        cache.fetchComp.onError.listen((LastFMError error){
           // TODO : display modal for signaling error type etc ..
           login.style.display = "";
         });

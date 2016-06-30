@@ -16,9 +16,9 @@ class Loading {
     loading.style.display = 'none';
     WindowHelper.lineHeightEqualsInnerHeight(loading);
     loading.id = "loading";
-    loading.classes.add(cache.isCachedDataPresent ? "loadingWithCache" : "loadingWithoutCache");
+    loading.classes.add(cache.usernamePresent ? "loadingWithCache" : "loadingWithoutCache");
     querySelector('body').append(loading);
-    LastFMFetching.loading.listen((percentage){
+    cache.fetchComp.loading.listen((percentage){
       loading.style.display = '';
       loading.text = percentage.toString() + "%";
       if (percentage == 100)

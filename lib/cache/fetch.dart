@@ -8,18 +8,23 @@ import 'package:lastfmStats/display/artist.dart';
 class LastFMFetching {
 
   static String API_KEY = "e48114b86f19bf363d5dbc85397799e1";
-  static String user = "";
+  String user = "";
 
-  static StreamController<int> _loading = new StreamController.broadcast();
-  static Stream<int> loading = _loading.stream;
-  static StreamController<LastFMError> _onError = new StreamController.broadcast();
-  static Stream<LastFMError> onError = _onError.stream;
+  StreamController<int> _loading = new StreamController.broadcast();
+  Stream<int> loading;
+  StreamController<LastFMError> _onError = new StreamController.broadcast();
+  Stream<LastFMError> onError;
 
-  static Map attr = {
+  Map attr = {
     "totalPages": "2"
   };
 
-  static Future<List<Artist>> getArtists(List<Artist> artists, [int page=1]){
+  LastFMFetching(){
+    loading = _loading.stream;
+    onError = _onError.stream;
+  }
+
+  Future<List<Artist>> getArtists(List<Artist> artists, [int page=1]){
     if (page > int.parse(attr['totalPages'])){
       return new Future.value(artists);
     }
@@ -37,7 +42,7 @@ class LastFMFetching {
     return completer.future;
   }
 
-  static Future<List<Artist>> getArtistPage([int page = 0]){
+  Future<List<Artist>> getArtistPage([int page = 0]){
     Completer<List<Artist>> completer = new Completer();
     List<Artist> artistsPage = new List();
     String url = "http://ws.audioscrobbler.com/2.0/?method=library.getartists&api_key=$API_KEY&user=$user&format=json";

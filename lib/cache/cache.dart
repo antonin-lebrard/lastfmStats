@@ -13,11 +13,8 @@ class Cache {
 
   static final String ARTISTS_KEY = "artistsCached";
   static final String UPDATE_KEY = "lastUpdate";
-  static final String USERNAME_KEY = "lastUsername";
 
-  static Cache _singleton;
-
-  Map pages = new Map();
+  String user;
   List<Artist> artists = new List();
 
   Stream onFetchComplete;
@@ -27,35 +24,34 @@ class Cache {
   StreamController _onCacheLoaded = new StreamController.broadcast();
   bool _cacheLoaded = false;
 
-  factory Cache(){
-    if (_singleton == null)
-      _singleton = new Cache._internal();
-    return _singleton;
-  }
+  LastFMFetching fetchComp;
 
-  Cache._internal(){
+  Cache(){
     onFetchComplete = _fetchComplete.stream;
     onCacheLoaded = _onCacheLoaded.stream;
-    new Loading(this);
   }
 
-  bool get isCachedDataPresent => window.localStorage.containsKey(ARTISTS_KEY);
-  bool get usernamePresent => window.localStorage.containsKey(USERNAME_KEY);
-  bool get _lastUpdatePresent => window.localStorage.containsKey(UPDATE_KEY);
+  bool get usernamePresent => window.localStorage.containsKey(this.user);
+  Map get _cachedData => JSON.decode(window.localStorage[this.user]);
 
-  load(){
-    if (usernamePresent)
-      LastFMFetching.user = window.localStorage[USERNAME_KEY];
-    if (LastFMFetching.user == null || LastFMFetching.user == "")
+  load(String user, LastFMFetching fetchComp){
+    this.fetchComp = fetchComp;
+    this.user = user;
+    new Loading(this);
+    fetchComp.user = this.user;
+    if (this.user == null || this.user == ""){
+      // TODO : display error
       return;
+    }
+
     if (_compareLastUpdateToNow().inDays > 5){
       onFetchComplete.listen((_) {
         cache();
       });
       fetch();
     }
-    if (isCachedDataPresent){
-      List<String> artistsJson = JSON.decode(window.localStorage[ARTISTS_KEY]);
+    if (usernamePresent){
+      List<String> artistsJson = JSON.decode(_cachedData[ARTISTS_KEY]);
       for (String s in artistsJson){
         artists.add(new Artist(JSON.decode(s)));
       }
@@ -68,7 +64,7 @@ class Cache {
 
   fetch(){
     List<Artist> newList = new List();
-    LastFMFetching.getArtists(newList).then((_) {
+    fetchComp.getArtists(newList).then((_) {
       if (_cacheLoaded) {
         artists = newList;
         fetchComplete = true;
@@ -89,15 +85,17 @@ class Cache {
       artistsJson.add(a.toJSONString());
     }
     DateTimeSerializable now = new DateTimeSerializable.now();
-    window.localStorage[UPDATE_KEY] = now.toJson();
-    window.localStorage[ARTISTS_KEY] = JSON.encode(artistsJson);
-    window.localStorage[USERNAME_KEY] = LastFMFetching.user;
+    Map storage = {
+      UPDATE_KEY : now.toJson(),
+      ARTISTS_KEY : JSON.encode(artistsJson)
+    };
+    window.localStorage[this.user] = JSON.encode(storage);
   }
 
   Duration _compareLastUpdateToNow(){
     Duration diff = new Duration(days:365);
-    if (_lastUpdatePresent){
-      DateTime lastUpdate = DateTimeSerializable.fromJson(window.localStorage[UPDATE_KEY]);
+    if (usernamePresent){
+      DateTime lastUpdate = DateTimeSerializable.fromJson(_cachedData[UPDATE_KEY]);
       DateTime now = new DateTime.now();
       diff = now.difference(lastUpdate);
     }
