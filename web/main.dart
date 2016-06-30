@@ -4,10 +4,9 @@
 import 'dart:html';
 
 import 'package:lastfmStats/display/login.dart';
+import 'package:lastfmStats/component/conductor.dart';
 
-DivElement output = querySelector("#output");
-DivElement login = querySelector("#login-outer");
 
 void main() {
-  new Login(login, output);
+  new Conductor();
 }
