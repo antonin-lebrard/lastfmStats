@@ -12,12 +12,15 @@ class Loading {
 
   Cache cache;
 
-  Loading(this.cache){
+  Element toHide;
+
+  Loading(this.cache, this.toHide){
     loading.style.display = 'none';
     WindowHelper.lineHeightEqualsInnerHeight(loading);
     loading.id = "loading";
     loading.classes.add(cache.usernamePresent ? "loadingWithCache" : "loadingWithoutCache");
-    querySelector('body').append(loading);
+    loading.style.width = toHide.parent.style.width;
+    toHide.parent.append(loading);
     cache.fetchComp.loading.listen((percentage){
       loading.style.display = '';
       loading.text = percentage.toString() + "%";

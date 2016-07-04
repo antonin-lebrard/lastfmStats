@@ -24,7 +24,7 @@ class Cache {
   StreamController _onCacheLoaded = new StreamController.broadcast();
   bool _cacheLoaded = false;
 
-  LastFMFetching fetchComp;
+  LastFMFetching fetchComp = new LastFMFetching();
 
   Cache(){
     onFetchComplete = _fetchComplete.stream;
@@ -34,10 +34,8 @@ class Cache {
   bool get usernamePresent => window.localStorage.containsKey(this.user);
   Map get _cachedData => JSON.decode(window.localStorage[this.user]);
 
-  load(String user, LastFMFetching fetchComp){
-    this.fetchComp = fetchComp;
+  load(String user){
     this.user = user;
-    new Loading(this);
     fetchComp.user = this.user;
     if (this.user == null || this.user == ""){
       // TODO : display error
