@@ -74,7 +74,7 @@ class Cache {
           _fetchComplete.add(null);
         });
       }
-    });
+    }).catchError((LastFMError error){});
   }
 
   cache(){

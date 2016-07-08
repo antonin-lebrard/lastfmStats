@@ -16,7 +16,8 @@ class LastFMFetching {
   Stream<LastFMError> onError;
 
   Map attr = {
-    "totalPages": "2"
+    "totalPages": "2",
+    "isFake": true
   };
 
   LastFMFetching(){
@@ -29,8 +30,10 @@ class LastFMFetching {
       return new Future.value(artists);
     }
     Completer completer = new Completer();
-    int loadingPercentage = ((page / int.parse(attr['totalPages'])) * 100).toInt();
-    _loading.add(loadingPercentage);
+    if (attr['isFake'] == null || !attr['isFake']){
+      int loadingPercentage = ((page / int.parse(attr['totalPages'])) * 100).toInt();
+      _loading.add(loadingPercentage);
+    }
     getArtistPage(page).then((List<Artist> artistsPage){
       artists.addAll(artistsPage);
       _loading.add(100);
@@ -52,7 +55,8 @@ class LastFMFetching {
     new HttpRequest()..open("GET", url)..onLoad.listen((event){
       Map content = JSON.decode(event.target.responseText);
       if (content.containsKey("error")){
-        return new Future.error(new LastFMError(int.parse(content["error"]), content["message"]));
+        print(content);
+        return new Future.error(new LastFMError(content["error"], content["message"]));
       }
       content = content["artists"];
       attr = content["@attr"];
@@ -72,4 +76,5 @@ class LastFMError {
   int code;
   String message;
   LastFMError(this.code, this.message);
+  toString() => "$code : $message";
 }

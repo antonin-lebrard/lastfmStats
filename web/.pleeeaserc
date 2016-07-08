@@ -1,0 +1,4 @@
+{
+  "in": ["animation.css", "styles.css"],
+  "out": "fin.css"
+}

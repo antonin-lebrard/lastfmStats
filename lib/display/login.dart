@@ -32,6 +32,7 @@ class Login {
         new Loading(cache, output);
         cache.load(loginInput.value);
         cache.fetchComp.onError.listen((LastFMError error){
+          print(error);
           // TODO : display modal for signaling error type etc ..
         });
       }
