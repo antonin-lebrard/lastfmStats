@@ -12,12 +12,22 @@ class LastfmUserComponent extends Component {
   </div></div></div>
   <div id="output"></div>''';
 
+  bool _hasAddedOtherComp = false;
+
   LastfmUserComponent(Element elem)
     : super(elem, htmlContent)
   {
     DivElement output = elem.querySelector("#output");
-    DivElement login = elem.querySelector("#login-outer");
-    new Login(login, output);
+    DivElement loginDiv = elem.querySelector("#login-outer");
+    Login login = new Login(loginDiv, output);
+    login.cache.onCacheLoaded.listen(addOtherLastfmComponent);
+    login.cache.onFetchComplete.listen(addOtherLastfmComponent);
+  }
+
+  addOtherLastfmComponent(_){
+    if (_hasAddedOtherComp) return;
+    _hasAddedOtherComp = true;
+    initialElement.insertAdjacentHtml("afterEnd", '<div class="lastfmUser"></div>');
   }
 
 

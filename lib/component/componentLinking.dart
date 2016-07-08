@@ -1,6 +1,7 @@
 library lastfmStats.componentLinking;
 
 import 'dart:html';
+import 'package:lastfmStats/component/component.dart';
 
 /**
  * In some way, this Class try to do the component linking mechanism of Angular,
@@ -11,16 +12,21 @@ import 'dart:html';
  */
 class ComponentLinking {
 
+  static Map<Element, Component> memoryLinking = new Map();
+
   static Map<String, Function> htmlClassToComponent = new Map();
 
-  static registerComponent(String htmlClass, Function allocateComponent(Element elem)){
+  static registerComponent(String htmlClass, Component allocateComponent(Element elem)){
     htmlClassToComponent[htmlClass] = allocateComponent;
   }
 
-  static launchInstantiating(){
-    htmlClassToComponent.forEach((String htmlClass, Function allocateComponent(Element elem)){
+  static refresh(){
+    htmlClassToComponent.forEach((String htmlClass, Component allocateComponent(Element elem)){
       querySelectorAll(".${htmlClass}").forEach((Element foundElem){
-        allocateComponent(foundElem);
+        if (!memoryLinking.containsKey(foundElem)) {
+          Component linked = allocateComponent(foundElem);
+          memoryLinking[foundElem] = linked;
+        }
       });
     });
   }

@@ -23,7 +23,10 @@ class Conductor {
       ComponentLinking.registerComponent(key, value);
     });
     window.onLoad.listen((_){
-      ComponentLinking.launchInstantiating();
+      ComponentLinking.refresh();
+    });
+    window.onChange.listen((_){
+      ComponentLinking.refresh();
     });
   }
 
