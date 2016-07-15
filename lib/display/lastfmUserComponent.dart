@@ -8,6 +8,8 @@ import 'package:lastfmStats/component/componentLinking.dart';
 
 class LastfmUserComponent extends Component {
 
+  static int _cur_z_index = 100;
+
   static String htmlContent =
   '''<div class="login-outer"><div class="login-middle"><div class="login-inner">
         <input class="login-username" title="username" placeholder="last.fm's username">
@@ -19,7 +21,10 @@ class LastfmUserComponent extends Component {
 
   LastfmUserComponent(Element elem)
     : super(elem, htmlContent)
-  {}
+  {
+    int zIndex = _cur_z_index--;
+    elem.style.zIndex = "$zIndex";
+  }
 
   @override
   void onInit(){

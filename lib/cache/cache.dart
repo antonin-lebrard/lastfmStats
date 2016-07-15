@@ -38,7 +38,6 @@ class Cache {
     this.user = user;
     fetchComp.user = this.user;
     if (this.user == null || this.user == ""){
-      // TODO : display error
       return;
     }
 

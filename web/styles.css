@@ -10,9 +10,11 @@ html, body {
 }
 .lastfmUser {
     width: 405px;
-    z-index: 100;
     float: left;
     position: relative;
+}
+.output{
+    background: white;
 }
 .artist {
     border: 3px solid #fff;
