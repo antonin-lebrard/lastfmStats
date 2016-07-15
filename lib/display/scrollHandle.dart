@@ -40,6 +40,7 @@ class ScrollHandle {
   }
 
   _fillOutput(){
+    if (cache.artists.length == 0) return;
     int indexToGo = nextIndex + 10;
     while (nextIndex != indexToGo) {
       if (nextIndex == cache.artists.length){

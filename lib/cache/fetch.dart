@@ -40,7 +40,6 @@ class LastFMFetching {
       completer.complete(getArtists(artists, ++page));
     }).catchError((LastFMError error){
       _onError.add(error);
-      return new Future.error(error);
     });
     return completer.future;
   }
@@ -56,7 +55,7 @@ class LastFMFetching {
       Map content = JSON.decode(event.target.responseText);
       if (content.containsKey("error")){
         print(content);
-        return new Future.error(new LastFMError(content["error"], content["message"]));
+        return completer.completeError(new LastFMError(content["error"], content["message"]));
       }
       content = content["artists"];
       attr = content["@attr"];

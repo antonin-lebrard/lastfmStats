@@ -3,23 +3,30 @@ library lastfmStats.lastfmUserComponent;
 import 'dart:html';
 import 'package:lastfmStats/display/login.dart';
 import 'package:lastfmStats/component/component.dart';
+import 'package:lastfmStats/display/errorComponent.dart';
+import 'package:lastfmStats/component/componentLinking.dart';
 
 class LastfmUserComponent extends Component {
 
   static String htmlContent =
-  '''<div id="login-outer"><div id="login-middle"><div id="login-inner">
-        <input id="login-username" title="username" placeholder="last.fm's username">
+  '''<div class="login-outer"><div class="login-middle"><div class="login-inner">
+        <input class="login-username" title="username" placeholder="last.fm's username">
   </div></div></div>
-  <div id="output"></div>''';
+  <div class="output"></div>
+  <div class="error"></div>''';
 
   bool _hasAddedOtherComp = false;
 
   LastfmUserComponent(Element elem)
     : super(elem, htmlContent)
-  {
-    DivElement output = elem.querySelector("#output");
-    DivElement loginDiv = elem.querySelector("#login-outer");
-    Login login = new Login(loginDiv, output);
+  {}
+
+  @override
+  void onInit(){
+    DivElement output = initialElement.querySelectorAll(".output")[0];
+    DivElement loginDiv = initialElement.querySelectorAll(".login-outer")[0];
+    ErrorComponent errorComp = ComponentLinking.memoryLinking[initialElement.querySelectorAll(".error")[0]];
+    Login login = new Login(loginDiv, errorComp, output);
     login.cache.onCacheLoaded.listen(addOtherLastfmComponent);
     login.cache.onFetchComplete.listen(addOtherLastfmComponent);
   }

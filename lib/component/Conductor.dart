@@ -2,12 +2,14 @@ library lastfmStats.conductor;
 import 'dart:html';
 import 'package:lastfmStats/display/lastfmUserComponent.dart';
 import 'package:lastfmStats/component/componentLinking.dart';
+import 'package:lastfmStats/display/errorComponent.dart';
 
 
 class Conductor {
 
   static Map<String, Function> _toRegister = {
     "lastfmUser": (Element elem) => new LastfmUserComponent(elem),
+    "error": (Element elem) => new ErrorComponent(elem),
   };
 
   static Conductor _singleton;

@@ -11,6 +11,8 @@ class Component {
     _fillHtmlContent(htmlContent);
   }
 
+  void onInit(){}
+
   void _fillHtmlContent(String htmlContent){
     initialElement.setInnerHtml(htmlContent);
   }

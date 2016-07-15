@@ -17,7 +17,7 @@ class Loading {
   Loading(this.cache, this.toHide){
     loading.style.display = 'none';
     WindowHelper.lineHeightEqualsInnerHeight(loading);
-    loading.id = "loading";
+    loading.classes.add("loading");
     loading.classes.add(cache.usernamePresent ? "loadingWithCache" : "loadingWithoutCache");
     loading.style.width = toHide.parent.style.width;
     toHide.parent.append(loading);
