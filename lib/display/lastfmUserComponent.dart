@@ -28,6 +28,7 @@ class LastfmUserComponent extends Component {
     if (_hasAddedOtherComp) return;
     _hasAddedOtherComp = true;
     initialElement.insertAdjacentHtml("afterEnd", '<div class="lastfmUser"></div>');
+    ensureRefresh();
   }
 
 

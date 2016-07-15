@@ -1,6 +1,7 @@
 library lastfmStats.component;
 
 import 'dart:html';
+import 'package:lastfmStats/component/componentLinking.dart';
 
 class Component {
 
@@ -11,7 +12,11 @@ class Component {
   }
 
   void _fillHtmlContent(String htmlContent){
-    initialElement.setInnerHtml(htmlContent);;
+    initialElement.setInnerHtml(htmlContent);
+  }
+
+  void ensureRefresh(){
+    ComponentLinking.refresh();
   }
 
 }
