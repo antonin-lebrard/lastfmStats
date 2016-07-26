@@ -56,14 +56,14 @@ html, body {
     height: 100%;
     width: 400px;
     transition: background-size 0.5s, background-position-x 0.5s, background-position-y 3s 0.60s;
-    background-size: 110%;
+    background-size: 110% 1111%;
     background-clip: padding-box;
     background-position-x: -20px;
     background-position-y: -40px;
     z-index: -1;
 }
 .imageWrapper:hover .image{
-    background-size: 100%;
+    background-size: 100% 1000%;
     background-position-x: 0;
     background-position-y: -310px;
 }
@@ -88,7 +88,6 @@ input {
 }
 .login-outer {
     display: table;
-    height: 100%;
     width: 100%;
 }
 .login-middle {
