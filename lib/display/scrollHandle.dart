@@ -3,16 +3,18 @@ library lastfmStats.scroll;
 import 'dart:html';
 import 'package:lastfmStats/cache/cache.dart';
 import 'package:lastfmStats/display/artist.dart';
+import 'package:lastfmStats/display/errorComponent.dart';
 
 
 class ScrollHandle {
 
   Cache cache;
   DivElement output;
+  ErrorComponent errorComp;
 
   int nextIndex = 0;
 
-  ScrollHandle(this.cache, this.output){
+  ScrollHandle(this.cache, this.output, this.errorComp){
     cache.onFetchComplete.listen((_)=>_display(true));
     cache.onCacheLoaded.listen((_)=>_display());
     _init();
@@ -28,7 +30,12 @@ class ScrollHandle {
     if (fromFetch){
       if (!cache.usernamePresent) _fillOutput();
       else {
-        // TODO : add modal to notify of update available
+        errorComp.displayUpdate("Update Now").then((isUpdating){
+          if (!isUpdating) return;
+          output.innerHtml = "";
+          nextIndex = 0;
+          _fillOutput();
+        });
       }
     }
     _fillOutput();

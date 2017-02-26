@@ -24,7 +24,7 @@ class Cache {
   StreamController _onCacheLoaded = new StreamController.broadcast();
   bool _cacheLoaded = false;
 
-  LastFMFetching fetchComp = new LastFMFetching();
+  LastFMFetching remoteFetch = new LastFMFetching();
 
   Cache(){
     onFetchComplete = _fetchComplete.stream;
@@ -36,7 +36,7 @@ class Cache {
 
   load(String user){
     this.user = user;
-    fetchComp.user = this.user;
+    remoteFetch.user = this.user;
     if (this.user == null || this.user == ""){
       return;
     }
@@ -61,7 +61,7 @@ class Cache {
 
   fetch(){
     List<Artist> newList = new List();
-    fetchComp.getArtists(newList).then((_) {
+    remoteFetch.getArtists(newList).then((_) {
       if (_cacheLoaded) {
         artists = newList;
         fetchComplete = true;

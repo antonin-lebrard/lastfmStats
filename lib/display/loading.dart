@@ -21,7 +21,7 @@ class Loading {
     loading.classes.add(cache.usernamePresent ? "loadingWithCache" : "loadingWithoutCache");
     loading.style.width = toHide.parent.style.width;
     toHide.parent.append(loading);
-    cache.fetchComp.loading.listen((percentage){
+    cache.remoteFetch.loading.listen((percentage){
       loading.style.display = '';
       loading.text = percentage.toString() + "%";
       if (percentage == 100)

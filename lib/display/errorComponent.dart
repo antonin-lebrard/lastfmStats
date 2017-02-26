@@ -8,6 +8,7 @@ import 'package:lastfmStats/component/component.dart';
 class ErrorComponent extends Component {
 
   static String errorVisibleClass = "error-outer-visible";
+  static String errorUpdateClass = "error-inner-update";
 
   static String htmlContent =
   '''
@@ -32,6 +33,25 @@ class ErrorComponent extends Component {
     new Timer(new Duration(seconds: 5), (){
       errorOuter.classes.remove(errorVisibleClass);
     });
+  }
+
+  Future<bool> displayUpdate(String message){
+    Completer completer = new Completer();
+    errorInner.innerHtml = message;
+    errorOuter.classes.add(errorVisibleClass);
+    errorInner.classes.add(errorUpdateClass);
+    Timer cancelable = new Timer(new Duration(seconds: 3000), (){
+      errorOuter.classes.remove(errorVisibleClass);
+      errorInner.classes.remove(errorUpdateClass);
+      completer.complete(false);
+    });
+    errorInner.onClick.listen((_){
+      cancelable.cancel();
+      errorOuter.classes.remove(errorVisibleClass);
+      errorInner.classes.remove(errorUpdateClass);
+      completer.complete(true);
+    });
+    return completer.future;
   }
 
 }

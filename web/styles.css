@@ -143,3 +143,7 @@ input {
     line-height: 40px;
     text-align: center;
 }
+.error-inner-update{
+    color: #e2dd29 !important;
+    cursor: pointer !important;
+}
