@@ -25,7 +25,7 @@ class Artist {
   String name;
   String playcount;
   List images;
-  String choosedImageUrl;
+  String chosenImageUrl;
 
   DivElement artistDiv;
   DivElement content;
@@ -37,7 +37,7 @@ class Artist {
     if (images != null) {
       for (int i = 0; i < images.length; i++) {
         if (images[i]['size'] == "large") {
-          choosedImageUrl = images[i]['#text'];
+          chosenImageUrl = images[i]['#text'];
           break;
         }
       }
@@ -83,7 +83,7 @@ class Artist {
     imageWrapperDiv.classes.add("imageWrapper");
     DivElement imageDiv = new DivElement();
     imageDiv.classes.add("image");
-    imageDiv.style.backgroundImage = 'url("$choosedImageUrl")';
+    imageDiv.style.backgroundImage = 'url("$chosenImageUrl")';
     return imageWrapperDiv..append(imageDiv);
   }
 
