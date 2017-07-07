@@ -1,12 +1,12 @@
 library lastfmStats.cache;
 
-import 'dart:html';
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:html';
+
+import 'package:lastfmStats/cache/datetime.dart';
 import 'package:lastfmStats/cache/fetch.dart';
 import 'package:lastfmStats/display/artist.dart';
-import 'package:lastfmStats/display/loading.dart';
-import 'package:lastfmStats/cache/datetime.dart';
 
 
 class Cache {
