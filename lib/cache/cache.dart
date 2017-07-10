@@ -48,9 +48,9 @@ class Cache {
       fetch();
     }
     if (usernamePresent){
-      List<String> artistsJson = JSON.decode(_cachedData[ARTISTS_KEY]);
-      for (String s in artistsJson){
-        artists.add(new Artist(JSON.decode(s)));
+      List<Map> artistsJson = _cachedData[ARTISTS_KEY];
+      for (Map m in artistsJson){
+        artists.add(new Artist(m));
       }
       _cacheLoaded = true;
       _onCacheLoaded.add(null);
@@ -77,14 +77,14 @@ class Cache {
   }
 
   cache(){
-    List<String> artistsJson = new List();
+    List<Map> artistsJson = new List();
     for (Artist a in artists){
-      artistsJson.add(a.toJSONString());
+      artistsJson.add(a.toJSON());
     }
     DateTimeSerializable now = new DateTimeSerializable.now();
     Map storage = {
       UPDATE_KEY : now.toJson(),
-      ARTISTS_KEY : JSON.encode(artistsJson)
+      ARTISTS_KEY : artistsJson
     };
     window.localStorage[this.user] = JSON.encode(storage);
   }

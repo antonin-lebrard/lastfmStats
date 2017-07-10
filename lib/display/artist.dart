@@ -163,13 +163,12 @@ class Artist {
 
   String toString() => "$name : $playcount";
 
-  String toJSONString(){
-    return JSON.encode(
-        new Map()
-          ..putIfAbsent('name',      () => name)
-          ..putIfAbsent('playcount', () => playcount)
-          ..putIfAbsent('image',     () => images)
-    );
+  Map toJSON(){
+    return {
+      'name': name,
+      'playcount': playcount,
+      'image': images,
+    };
   }
 
 }

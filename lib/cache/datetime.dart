@@ -10,8 +10,8 @@ class DateTimeSerializable extends DateTime {
 
   DateTimeSerializable.now() : super.now();
 
-  String toJson(){
-    return JSON.encode({
+  Map toJson(){
+    return {
       "year": year,
       "month": month,
       "day": day,
@@ -19,14 +19,13 @@ class DateTimeSerializable extends DateTime {
       "minute": minute,
       "second": second,
       "millisecond": millisecond
-    });
+    };
   }
 
-  static DateTimeSerializable fromJson(String json) {
-    Map m = JSON.decode(json);
-    return new DateTimeSerializable(m["year"],m["month"],m["day"],
-                                    m["hour"],m["minute"],m["second"],
-                                    m["millisecond"]);
+  static DateTimeSerializable fromJson(Map json) {
+    return new DateTimeSerializable(json["year"],json["month"],json["day"],
+                                    json["hour"],json["minute"],json["second"],
+                                    json["millisecond"]);
   }
 
 
